@@ -110,6 +110,7 @@ def report_wind_speed_reading(body):
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("oli817-weather-1.0.0-swagger.yaml",
+            base_path="/receiver",
             strict_validation=True,
             validate_responses=True)
 

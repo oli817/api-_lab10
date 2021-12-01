@@ -21,6 +21,7 @@ else:
     app_conf_file = "app_conf.yml"
     log_conf_file = "log_conf.yml"
 
+
 with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
     data_file = app_config['datastore']['filename']
@@ -117,10 +118,14 @@ def init_scheduler():
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("oli817-weather-1.0.0-swagger.yaml",
+            base_path="/processing", 
             strict_validation=True,
             validate_responses=True)
-CORS(app.app)
-app.app.config['CORS_HEADERS'] = 'Content-Type'
+
+if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test": 
+    CORS(app.app) 
+    app.app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 
 if __name__ == "__main__":
